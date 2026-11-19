@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Arena Duelo</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;700&family=IBM+Plex+Mono:wght@400;600&display=swap">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="game"></div>
+
+  <!-- HUD em jogo -->
+  <div id="hud" hidden>
+    <header class="scoreboard">
+      <div class="sb-side sb-you"><span class="sb-label">Você</span><span id="score-you" class="sb-num">0</span></div>
+      <div class="sb-mid"><span id="round-label">Round 1</span><span class="sb-goal">primeiro a 5</span></div>
+      <div class="sb-side sb-bot"><span id="score-bot" class="sb-num">0</span><span class="sb-label">Bot</span></div>
+    </header>
+    <div class="enemy-bar" aria-label="Vida do bot"><div class="track"><div id="hp-bot" class="fill"></div></div></div>
+
+    <div id="crosshair" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+    <div id="hitmarker" aria-hidden="true"></div>
+    <div id="dmg" aria-hidden="true"></div>
+    <div id="lock-hint" hidden>Clique para mirar com o mouse</div>
+
+    <div id="banner" aria-live="polite"><div id="banner-title"></div><div id="banner-sub"></div></div>
+
+    <div class="vitals">
+      <span class="vit-label">Vida</span>
+      <div class="vit-row"><span id="hp-you-num" class="vit-num">100</span><div class="track"><div id="hp-you" class="fill"></div></div></div>
+    </div>
+    <canvas id="radar" aria-label="Radar"></canvas>
+    <div id="vignette"></div>
+  </div>
+
+  <!-- Menu inicial -->
+  <div id="menu" class="overlay">
+    <div class="card">
+      <p class="eyebrow">Duelo 1 × 1 · arena 56 × 56 m</p>
+      <h1>Arena<br>Duelo</h1>
+      <p class="lede">Você contra um bot armado. Use os pilares e as caixas como cobertura. Primeiro a 5 abates vence.</p>
+      <div class="field">
+        <span class="field-label" id="diff-label">Dificuldade do bot</span>
+        <div class="seg" role="group" aria-labelledby="diff-label">
+          <button type="button" data-diff="easy">Fácil</button>
+          <button type="button" data-diff="normal">Normal</button>
+          <button type="button" data-diff="hard">Difícil</button>
+        </div>
+      </div>
+      <dl class="controls">
+        <div><dt><kbd>W</kbd><kbd>S</kbd></dt><dd>Andar para frente / trás (ou <kbd>↑</kbd><kbd>↓</kbd>)</dd></div>
+        <div><dt><kbd>A</kbd><kbd>D</kbd></dt><dd>Andar de lado</dd></div>
+        <div><dt><kbd>Mouse</kbd></dt><dd>Mirar (ou <kbd>←</kbd><kbd>→</kbd> para girar)</dd></div>
+        <div><dt><kbd>Clique</kbd></dt><dd>Atirar (ou <kbd>Espaço</kbd>; segure para rajada)</dd></div>
+        <div><dt><kbd>Shift</kbd><kbd>←</kbd><kbd>→</kbd></dt><dd>Andar de lado</dd></div>
+        <div><dt><kbd>Esc</kbd></dt><dd>Pausar</dd></div>
+      </dl>
+      <button id="start" class="primary" type="button">Começar <span>Enter</span></button>
+    </div>
+  </div>
+
+  <!-- Pausa -->
+  <div id="pause" class="overlay" hidden>
+    <div class="card card-sm">
+      <h2>Pausado</h2>
+      <div class="actions">
+        <button id="resume" class="primary" type="button">Continuar <span>Esc</span></button>
+        <button id="quit" class="ghost" type="button">Sair para o menu</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Fim de partida -->
+  <div id="end" class="overlay" hidden>
+    <div class="card">
+      <p class="eyebrow">Fim de partida</p>
+      <h2 id="end-title">Vitória</h2>
+      <p id="end-score" class="end-score">5 × 0</p>
+      <dl class="stats">
+        <div><dt>Disparos</dt><dd id="st-shots">0</dd></div>
+        <div><dt>Acertos</dt><dd id="st-hits">0</dd></div>
+        <div><dt>Precisão</dt><dd id="st-acc">0%</dd></div>
+        <div><dt>Bot</dt><dd id="st-diff">Normal</dd></div>
+      </dl>
+      <div class="actions">
+        <button id="restart" class="primary" type="button">Jogar de novo <span>Enter</span></button>
+        <button id="to-menu" class="ghost" type="button">Menu</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="game.js"></script>
+</body>
+</html>
